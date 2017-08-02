@@ -58,8 +58,7 @@ static int kw9015b_callback(bitbuffer_t *bitbuffer) {
     local_time_str(0, time_str);
         data = data_make(
             "time",          "",            DATA_STRING, time_str,
-            "brand",         "",            DATA_STRING, "Inovalley",
-            "model",         "",            DATA_STRING, "kw9015b",
+            "model",         "",            DATA_STRING, "Inovalley-kw9015b",
             "id",            "House Code",  DATA_INT,    device,
             "temperature_C", "Temperature", DATA_FORMAT, "%.02f C", DATA_DOUBLE, fTemp,
             "rain",          "Rain",        DATA_INT, iRain,
