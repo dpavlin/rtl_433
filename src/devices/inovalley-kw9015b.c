@@ -39,7 +39,7 @@ static int kw9015b_callback(bitbuffer_t *bitbuffer) {
 				(reverse8(bb[i][3])>>4)+(reverse8(bb[i][3])&0x0F));
 
 			if( (chksum&0x0F) == ( reverse8(bb[i][4]) &0x0F)){
-#if 1 // FIXME remove
+/* FIXME original output to stderr 
 				fprintf(stderr, "\nSensor        = Temperature and rain event\n");
 				fprintf(stderr, "Device        = %d\n", device);
 				fprintf(stderr, "Temp          = %f\n",fTemp);
@@ -51,7 +51,7 @@ static int kw9015b_callback(bitbuffer_t *bitbuffer) {
 				reverse8(bb[i][2]),
 				reverse8(bb[i][3]),
 				reverse8(bb[i][4]));
-#endif
+*/
 
     data_t *data;
     char time_str[LOCAL_TIME_BUFLEN];
