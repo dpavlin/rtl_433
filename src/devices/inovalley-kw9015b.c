@@ -1,4 +1,5 @@
 #include "rtl_433.h"
+#include "data.h"
 #include "util.h"
 /* Inovalley kw9015b rain and Temperature weather station
  *
@@ -38,17 +39,33 @@ static int kw9015b_callback(bitbuffer_t *bitbuffer) {
 				(reverse8(bb[i][3])>>4)+(reverse8(bb[i][3])&0x0F));
 
 			if( (chksum&0x0F) == ( reverse8(bb[i][4]) &0x0F)){
-				fprintf(stdout, "\nSensor        = Temperature and rain event\n");
-				fprintf(stdout, "Device        = %d\n", device);
-				fprintf(stdout, "Temp          = %f\n",fTemp);
-				fprintf(stdout, "Rain          = %d\n",iRain);
-				fprintf(stdout, "checksum      = %02x==%02x\n",chksum&0xF,reverse8(bb[i][4]));
-				fprintf(stdout, "Received Data = %02X %02X %02X %02X %02X\n",
+#if 1 // FIXME remove
+				fprintf(stderr, "\nSensor        = Temperature and rain event\n");
+				fprintf(stderr, "Device        = %d\n", device);
+				fprintf(stderr, "Temp          = %f\n",fTemp);
+				fprintf(stderr, "Rain          = %d\n",iRain);
+				fprintf(stderr, "checksum      = %02x==%02x\n",chksum&0xF,reverse8(bb[i][4]));
+				fprintf(stderr, "Received Data = %02X %02X %02X %02X %02X\n",
 				reverse8(bb[i][0]),
 				reverse8(bb[i][1]),
 				reverse8(bb[i][2]),
 				reverse8(bb[i][3]),
 				reverse8(bb[i][4]));
+#endif
+
+    data_t *data;
+    char time_str[LOCAL_TIME_BUFLEN];
+    local_time_str(0, time_str);
+        data = data_make(
+            "time",          "",            DATA_STRING, time_str,
+            "brand",         "",            DATA_STRING, "Inovalley",
+            "model",         "",            DATA_STRING, "kw9015b",
+            "id",            "House Code",  DATA_INT,    device,
+            "temperature_C", "Temperature", DATA_FORMAT, "%.02f C", DATA_DOUBLE, fTemp,
+            "rain",          "Rain",        DATA_INT, iRain,
+            NULL);
+        data_acquired_handler(data);
+
 
 
 				return 1;
