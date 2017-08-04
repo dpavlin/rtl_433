@@ -122,6 +122,9 @@ static int oregon_scientific_callback_sl109h(bitbuffer_t *bitbuffer)
 
         status = get_status(msg[3]);
 
+        char code_str[2*4+1];
+        sprintf(code_str, "%02x%02x%02x%02x", msg[0], msg[1], msg[2], msg[3]);
+
         data = data_make("time",          "",           DATA_STRING,                         time_str,
                          "model",         "Model",                              DATA_STRING,    "Oregon Scientific SL109H",
                          "id",            "Id",                                 DATA_INT,    id,
@@ -129,6 +132,7 @@ static int oregon_scientific_callback_sl109h(bitbuffer_t *bitbuffer)
                          "temperature_C", "Celcius",	DATA_FORMAT, "%.02f C", DATA_DOUBLE, temp_c,
                          "humidity",      "Humidity",	DATA_FORMAT, "%u %%",   DATA_INT,    humidity,
                          "status",        "Status",                             DATA_INT,    status,
+                         "code",          "Raw Code",    DATA_STRING, code_str,
                          NULL);
         data_acquired_handler(data);
         return 1;
